@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roteiro E2E - Estacionamento Rotativo</title>
+<style>
+  :root{font-family:Inter,system-ui,Segoe UI,Arial;--accent:#0b6efd;}
+  body{max-width:900px;margin:24px auto;padding:20px;background:#f8f9fb;border-radius:10px;}
+  header h1{margin:0;font-size:1.6rem;color:#0b2b4f;}
+  .card{background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 20px rgba(12,32,64,0.06);margin-top:12px;}
+  h2{color:#0b3a6b;margin-top:0;}
+  pre{background:#0f1724;color:#dbeafe;padding:12px;border-radius:6px;overflow:auto;}
+  .steps{counter-reset:step; margin:0;padding:0;list-style:none;}
+  .steps li{counter-increment:step;margin:14px 0;padding-left:26px;position:relative;}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:0;background:#0b6efd;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  footer{font-size:0.85rem;color:#445; margin-top:18px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Roteiro E2E — Estacionamento Rotativo</h1>
+  <p class="muted">Contexto e passos para evidenciar o funcionamento do sistema especialista (Prolog).</p>
+</header>
+
+<section class="card">
+  <h2>1. Contexto (1 parágrafo)</h2>
+  <p>
+    Cenário: Falha na <strong>máquina de pagamento</strong> do estacionamento em horário pico — 40 veículos sem conseguir pagar/retirar ticket; não é incidente de segurança; há evento no local; objetivo: obter prioridade, prazo e grupo responsável.
+  </p>
+</section>
+
+<section class="card">
+  <h2>2. Passo a passo (com prints esperados)</h2>
+  <ol class="steps">
+    <li>Executar SWI-Prolog: <code>?- ['src/main.pl'].</code></li>
+    <li>Iniciar: <code>?- start.</code> → escolher opção <strong>1) Executar consulta</strong>.</li>
+    <li>Entradas fornecidas:
+      <ul>
+        <li>Categoria: <strong>maquina</strong></li>
+        <li>Veiculos afetados: <strong>40</strong></li>
+        <li>Seguranca? <strong>n</strong></li>
+        <li>Evento? <strong>s</strong></li>
+        <li>Horario pico? <strong>s</strong></li>
+      </ul>
+    </li>
+    <li>Registrar bloco <code>[Explicacao]</code> e o <code>RESULTADO</code> impresso pelo sistema.</li>
+  </ol>
+  <p>Exemplo de saída esperada (trecho):</p>
+  <pre>
+[Explicacao]
+- Categoria: maquina
+- Afetados: 40 (medio)
+- Seguranca: nao | Evento: sim | HorarioPico: sim -> Urgencia: alta
+- Prioridade: p2
+- Grupo responsavel: manutencao
+- Prazo-alvo (min): 15
+
+RESULTADO: resultado(priority(p2), alvo_minutos(15), grupo(manutencao))
+  </pre>
+</section>
+
+<section class="card">
+  <h2>3. Resultado esperado (conferência)</h2>
+  <ul>
+    <li>Impacto = médio (20–99 afetados)</li>
+    <li>Urgência = alta (evento e/ou horário pico combinados)</li>
+    <li>Prioridade = p2 pela matriz</li>
+    <li>SLA base (maquina) = 30 min; fator p2 = 0.50 → Alvo teórico = 15 min (ajustado)</li>
+    <li>Grupo = manutencao</li>
+    <li>Resultado final: <code>resultado(priority(p2), alvo_minutos(15), grupo(manutencao))</code></li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>4. Conclusão</h2>
+  <p>O sistema classificou impacto e urgência corretamente, derivou prioridade p2 e prazo de 15 minutos para categoria <em>maquina</em>, direcionando para o grupo <em>manutencao</em>.</p>
+</section>
+
+<footer>
+  <p>Baseado no modelo de projeto e roteiro de E2E fornecido (arquitetura e requisitos). :contentReference[oaicite:4]{index=4} :contentReference[oaicite:5]{index=5}</p>
+</footer>
+</body>
+</html>
